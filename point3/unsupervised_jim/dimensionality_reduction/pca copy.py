@@ -22,6 +22,12 @@ class PCA:
         
     mean_ : array-like, shape (n_features,)
         Mean of each feature in the original data.
+
+    Methods:
+    --------
+        fit_transform(X): Computes the PCA of a given matrix X and returns its singular values, left and right singular vectors.
+        fit_transform_truncated(X): Computes the truncated PCA of a given matrix X and returns its singular values, left and right singular vectors.
+            
     """
     
     def __init__(self, n_components=None):

@@ -6,9 +6,11 @@ class SVD:
     It allows for computing the SVD of a given matrix, as well as the truncated SVD.
     
     Attributes:
+    -----------
         n_components (int): The number of components to keep in the truncated SVD.
     
     Methods:
+    --------
         fit_transform(X): Computes the SVD of a given matrix X and returns its singular values, left and right singular vectors.
         fit_transform_truncated(X): Computes the truncated SVD of a given matrix X and returns its singular values, left and right singular vectors.
     

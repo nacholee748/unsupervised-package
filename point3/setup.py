@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="unsupervised-package-jim",
+    name="unsupervised_jim",
     version="0.0.1",
     description="Library for calculating matrix operations ",
     url="https://github.com/nacholee748/unsupervised-package",
