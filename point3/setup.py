@@ -12,7 +12,6 @@ setup(
         "pandas",
         "scikit-learn"
     ],
-    long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     author="JORGE IGNACIO MORALES",
     author_email="jorge.morales1@udea.edu.co",

@@ -2,55 +2,59 @@ import numpy as np
 
 class SVD:
     """
-    This class provides an implementation of the Singular Value Decomposition (SVD) algorithm using NumPy.
-    It allows for computing the SVD of a given matrix, as well as the truncated SVD.
-    
-    Attributes:
-    -----------
-        n_components (int): The number of components to keep in the truncated SVD.
-    
-    Methods:
-    --------
-        fit_transform(X): Computes the SVD of a given matrix X and returns its singular values, left and right singular vectors.
-        fit_transform_truncated(X): Computes the truncated SVD of a given matrix X and returns its singular values, left and right singular vectors.
-    
+    A class for performing Singular Value Decomposition (SVD) using NumPy.
     """
-
-    def __init__(self, n_components=None):
+    
+    def __init__(self, n_components=2):
         """
-        Constructor for the SVD class.
+        Initialize the SVD class with a matrix to decompose.
         
         Args:
-            n_components (int): The number of components to keep in the truncated SVD. Defaults to None.
+        - matrix (numpy.ndarray): The matrix to perform SVD on.
         """
         self.n_components = n_components
+        self.U = None
+        self.S = None
+        self.V = None
 
-    def fit_transform(self, X):
+    def fit(self,matrix):
         """
-        Computes the SVD of a given matrix X and returns its singular values, left and right singular vectors.
+        Calculate the SVD of the matrix using NumPy.
+
+        Args:
+        - matrix (numpy.ndarray): The matrix to perform SVD on
+        """
+        self.U, self.S, self.V= np.linalg.svd(matrix)
+
+        
+    def fit_transform(self,matrix):
+        """
+        Calculate the SVD of the matrix using NumPy.
+
+        Args:
+        - matrix (numpy.ndarray): The matrix to perform SVD on.
+        
+        Returns:
+        - Array numpy.ndarrays: transformed matrix with componentes defined or 2 default
+        """
+        
+        self.U, self.S, self.V = np.linalg.svd(matrix)
+        matrix_transform = self._reconstruct(self.U, self.S, self.V, self.n_components)
+        return matrix_transform
+    
+    def _reconstruct(self, U, S, V, k):
+        """
+        Reconstruct the original matrix from the SVD components using the first k components.
         
         Args:
-            X (numpy.ndarray): The input matrix to compute the SVD of.
-            
-        Returns:
-            tuple: A tuple of the singular values, left singular vectors, and right singular vectors.
-        """
-        U, S, Vt = np.linalg.svd(X, full_matrices=False)
-        return S, U, Vt.T
-
-    def fit_transform_truncated(self, X):
-        """
-        Computes the truncated SVD of a given matrix X and returns its singular values, left and right singular vectors.
+        - U (numpy.ndarray): The U matrix from SVD.
+        - S (numpy.ndarray): The S matrix from SVD.
+        - V (numpy.ndarray): The V matrix from SVD.
+        - k (int): The number of components to use for reconstruction.
         
-        Args:
-            X (numpy.ndarray): The input matrix to compute the truncated SVD of.
-            
         Returns:
-            tuple: A tuple of the truncated singular values, truncated left singular vectors, and truncated right singular vectors.
+        - numpy.ndarray: The reconstructed matrix.
         """
-        U, S, Vt = np.linalg.svd(X, full_matrices=False)
-        if self.n_components is None:
-            return S, U, Vt.T
-        else:
-            return S[:self.n_components], U[:, :self.n_components], Vt[:self.n_components, :]
-
+        S_k = np.zeros((k, k))
+        S_k[:k, :k] = np.diag(S[:k])
+        return np.dot(U[:, :k], np.dot(S_k, V[:k, :]))

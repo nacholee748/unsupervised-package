@@ -5,7 +5,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from unsupervised import PCA, SVD, tSNE
+from unsupervised_jim import PCA, SVD, TSNE
 from sklearn.datasets import fetch_openml
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
@@ -35,21 +35,23 @@ accuracy = model.score(X_test, y_test)
 print(f"La precisión del modelo es: {accuracy:.2f}")
 
 # Utilizar el método SVD
-svd = SVD(n_components=2)
+svd = SVD(n_components=5)
 X_08_svd = svd.fit_transform(X_08_scaled)
 
-# Utilizar el método t-SNE
-tsne = tSNE(n_components=2)
-X_08_tsne = tsne.fit_transform(X_08_scaled)
+# # Utilizar el método t-SNE
+# TSNE = TSNE(n_components=2)
+# X_08_tsne = TSNE.fit_transform(X_08_scaled)
 
 # Utilizar el método PCA
-pca = PCA(n_components=2)
+pca = PCA(n_components=5)
+pca.fit(X_08_scaled)
 X_08_pca = pca.fit_transform(X_08_scaled)
 
 # Crear las gráficas y agregar la precisión en el título
 fig, axs = plt.subplots(1, 3, figsize=(12, 4))
 
-for i, (X_transformed, title) in enumerate(zip([X_08_svd, X_08_tsne, X_08_pca], ['SVD', 't-SNE', 'PCA'])):
+# for i, (X_transformed, title) in enumerate(zip([X_08_svd, X_08_tsne, X_08_pca], ['SVD', 't-SNE', 'PCA'])):
+for i, (X_transformed, title) in enumerate(zip([X_08_svd, X_08_pca], ['SVD','PCA'])):
     axs[i].scatter(X_transformed[:, 0], X_transformed[:, 1], c=y_08, cmap='viridis')
     axs[i].set_title(f"{title} - Precisión: {accuracy:.2f}")
     
