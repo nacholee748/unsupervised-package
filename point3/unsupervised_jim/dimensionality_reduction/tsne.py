@@ -97,7 +97,7 @@ class TSNE(BaseEstimator):
 
     def fit_transform(self, X, y=None):
         self._setup_input(X, y)
-
+        np.random.seed(1111)
         Y = np.random.randn(self.n_samples, self.n_components)
         velocity = np.zeros_like(Y)
         gains = np.ones_like(Y)
